@@ -1,0 +1,18 @@
+{
+    "manifest_version": 2,
+    "name": "ShortLinks",
+    "description": "Get a shorter link to the clipboard.",
+    "version": "0.0.1", 
+    "permissions": [
+        "https://*/",
+        "http://*/",
+        "tabs"
+    ],
+    "browser_action": {
+        "default_icon": "internet.png",
+        "default_popup": "popup.html"
+    },
+    "icons":{
+        "128" : "internet.png"
+    }
+}
