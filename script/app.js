@@ -1,17 +1,51 @@
+const blackList = [
+	// exemple : 'www.youtube.com'
+]
+
 function shortlink(url) {
-	if (url.host.includes('amazon')) {
-		const ID = url.pathname.match(/(dp|gp\/product)\/([A-Z 0-9]{10})/)[0]
-		const shorturl = url.origin + '/' + ID.replace('gp/product', 'dp')
-		return shorturl
-	} else if (url.host.includes('ebay')) {
-		const ID = url.pathname.match(/([0-9]{12})/)[0]
-		const shorturl = url.origin + '/itm/' + ID
-		return shorturl
-	} else if (url.host.includes('youtube')) {
+	// Si c'est un site blacklisté, on renvoit directement le lien
+	if (blackList.some(blackListedSite => url.host === blackListedSite))
 		return url.href
-	} else {
-		return url.href.split('?')[0]
+
+	// Si c'est un site amazon
+	if (url.host.match(/www.amazon.(\w{2})/)) {
+		// On remplace le pathname par uniquement le /dp/ABCDE12345
+		const newPathname = url.pathname.replace(
+			/^(?:\/.*)?\/(?:dp|gp\/product)\/([A-Z 0-9]{10}).*$/,
+			'/dp/$1',
+		)
+
+		return `${url.origin}${newPathname}`
 	}
+
+	// Si c'est un site ebay
+	if (url.host.match(/www.ebay.(\w{2})/)) {
+		// On remplace le pathname par uniquement le /itm/ABCDEF123456
+		const newPathname = url.pathname.replace(
+			/^\/itm\/.*\/(\d{12})$/,
+			'/itm/$1',
+		)
+		return `${url.origin}${newPathname}`
+	}
+
+	// Sinon
+	switch (url.host) {
+		// Youtube
+		case 'www.youtube.com':
+			// Supprime les "&feature=youtu.be" à la fin des urls
+			// obtenus à partir d'un lien raccourci
+			return `${url.origin}${url.pathname}${url.search.replace(
+				/^(\?v=.*)&feature=youtu.be$/,
+				'$1',
+			)}`
+
+		default:
+			break
+	}
+
+	// Si ce n'est aucun site spécial, on enlève tout ce qu'il y après
+	// le premier "?"
+	return url.href.split('?')[0]
 }
 
 function copyStringToClipboard(str) {
