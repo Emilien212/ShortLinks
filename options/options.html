@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="options.css"/>
+        <script src="options.js" defer></script>
+        <title>Shortlinks Options</title>
+    </head>
+    <body>
+        <h1 class="title">Shortlinks Options</h1>
+        <h2>1. Options générales</h2>
+        <table class="options">
+            <tr>
+                <td>
+                    <div class="container">
+                        <label class="switch">
+                            <input type="checkbox" id="copy_on_click">
+                            <span class="slider round">
+                        </label>
+                    </div>
+                </td>
+                <td>
+                    Copy shortened link in the clipboard when you click on the extension logo
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="container">
+                        <label class="switch">
+                            <input type="checkbox" id="notification">
+                            <span class="slider round">
+                        </label>
+                    </div>
+                </td>
+                <td>
+                    Get a notification saying that the link has been successfully shortened and copied
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="container">
+                        <label class="switch">
+                            <input type="checkbox" id="clipboard">
+                            <span class="slider round">
+                        </label>
+                    </div>
+                </td>
+                <td>
+                    Copy shortened link in the clipboard at this key combination :
+                    <input type="text" id="command">
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

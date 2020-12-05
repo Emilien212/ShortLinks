@@ -2,17 +2,33 @@
     "manifest_version": 2,
     "name": "ShortLinks",
     "description": "Get a shorter link to the clipboard.",
-    "version": "0.0.1", 
+    "version": "2.0.0", 
     "permissions": [
         "https://*/",
         "http://*/",
-        "tabs"
+        "tabs", 
+        "storage",
+        "commands",
+        "activeTab", 
+        "notifications", 
+        "management"
     ],
     "browser_action": {
-        "default_icon": "internet.png",
-        "default_popup": "popup.html"
+        "default_icon": "assets/ShortLinks.png",
+        "default_popup": "popup/popup.html"
     },
     "icons":{
-        "128" : "internet.png"
+        "128" : "assets/ShortLinks.png"
+    },
+    "content_scripts": [
+      {
+        "matches": ["http://*/*", "https://*/*"],
+        "js": ["script/key_event.js"],
+        "run_at": "document_start"
+      }
+    ],
+    "background":{
+      "page" : "background/background.html",
+      "persistent": false
     }
 }
