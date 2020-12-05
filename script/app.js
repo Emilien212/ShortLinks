@@ -1,4 +1,12 @@
+const blacklist = ["youtube"]
+
 function shortlink(url){
+    for (const site of blacklist){
+        console.log(site)
+        if(url.host.includes(site)){
+            return url.href
+        }
+    }
     if(url.host.includes("amazon")){
         const ID = url.pathname.match(/(dp|gp\/product)\/([A-Z 0-9]{10})/)[0]
         const shorturl = url.origin + "/" + ID.replace("gp/product", "dp")
@@ -7,8 +15,6 @@ function shortlink(url){
         const ID = url.pathname.match(/([0-9]{12})/)[0]
         const shorturl = url.origin + "/itm/" + ID
         return shorturl
-    }else if(url.host.includes("youtube")){
-        return url.href
     }else{
         const shorturl = url.href.split('?')[0]
         return shorturl
