@@ -1,18 +1,17 @@
-function shortlink(url){
-    if(url.host.includes("amazon")){
-        const ID = url.pathname.match(/(dp|gp\/product)\/([A-Z 0-9]{10})/)[0]
-        const shorturl = url.origin + "/" + ID.replace("gp/product", "dp")
-        return shorturl
-    }else if(url.host.includes("ebay")){
-        const ID = url.pathname.match(/([0-9]{12})/)[0]
-        const shorturl = url.origin + "/itm/" + ID
-        return shorturl
-    }else if(url.host.includes("youtube")){
-        return url.href
-    }else{
-        const shorturl = url.href.split('?')[0]
-        return shorturl
-    }
+function shortlink(url) {
+	if (url.host.includes('amazon')) {
+		const ID = url.pathname.match(/(dp|gp\/product)\/([A-Z 0-9]{10})/)[0]
+		const shorturl = url.origin + '/' + ID.replace('gp/product', 'dp')
+		return shorturl
+	} else if (url.host.includes('ebay')) {
+		const ID = url.pathname.match(/([0-9]{12})/)[0]
+		const shorturl = url.origin + '/itm/' + ID
+		return shorturl
+	} else if (url.host.includes('youtube')) {
+		return url.href
+	} else {
+		return url.href.split('?')[0]
+	}
 }
 
 function copyStringToClipboard(str) {
@@ -23,12 +22,21 @@ function copyStringToClipboard(str) {
 	document.body.appendChild(el)
 	el.select()
 	document.execCommand('copy')
-    document.body.removeChild(el)
-    chrome.storage.sync.get(['notification'], function(item){
-        if(item.notification){
-            chrome.notifications.create("notification", {type: "basic", iconUrl : "./../assets/ShortLinks.png", title: "ShortLinks", message: "Link successfully shortened and copied !"}, function(){})
-        }
-    })
+	document.body.removeChild(el)
+	chrome.storage.sync.get(['notification'], item => {
+		if (item.notification) {
+			chrome.notifications.create(
+				'notification',
+				{
+					type: 'basic',
+					iconUrl: './../assets/ShortLinks.png',
+					title: 'ShortLinks',
+					message: 'Link successfully shortened and copied !',
+				},
+				function () {},
+			)
+		}
+	})
 }
 
-export {copyStringToClipboard, shortlink}
+export { copyStringToClipboard, shortlink }
