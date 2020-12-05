@@ -2,7 +2,6 @@ const blacklist = ["youtube"]
 
 function shortlink(url){
     for (const site of blacklist){
-        console.log(site)
         if(url.host.includes(site)){
             return url.href
         }
