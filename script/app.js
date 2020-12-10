@@ -6,10 +6,13 @@ function storage(key) {
     })
 }
 
-
 async function shortlink(url){
-    const blacklist = []
-
+    const storages = await storage(["blacklist"])
+    let blacklist = []
+    if (storages.blacklist == true){
+        const blacklist_input = await storage(["blacklist_input"])
+        blacklist = blacklist.concat(blacklist_input.blacklist_input)
+    }
     if (blacklist.some(blacklisted => url.host === blacklisted)){
         return url.href
     }

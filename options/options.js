@@ -1,21 +1,16 @@
 import {shortlink, copyStringToClipboard, storage} from "../script/app.js"
 
-const checkbox = ["copy_on_click", "clipboard", "notification", "int_point"]
-async function check(){
+const checkbox = ["copy_on_click", "clipboard", "notification", "int_point", "blacklist"]
+async function start(){
     for (const element of checkbox){
         const object = await storage([element])
         document.getElementById(element).checked=object[element]
-    }   
-}
-check()
-
-for (const element of checkbox){
-    document.getElementById(element).addEventListener('change', (event) => {
-        chrome.storage.sync.set({ [element]: document.getElementById(element).checked})
-      })
-}
-
-async function cp_command(){
+        document.getElementById(element).addEventListener('change', (event) => {
+            chrome.storage.sync.set({ [element]: document.getElementById(element).checked})
+        })
+    }
+    const blacklist_input = await storage(["blacklist_input"])
+    document.getElementById("blacklist_input").value = blacklist_input.blacklist_input.join(', ')
     const item = await storage(['clipboard_command'])
     let string = ""
     if(item.clipboard_command.altKey){
@@ -27,9 +22,8 @@ async function cp_command(){
     }
     string+=item.clipboard_command.key.toUpperCase()
     document.getElementById("command").value = string
-    
 }
-cp_command()
+start()
 
 document.getElementById("command").addEventListener("keyup", function(e){
     document.getElementById("command").addEventListener("focus", function(){
@@ -41,3 +35,11 @@ document.getElementById("command").addEventListener("keyup", function(e){
         cp_command()
     }
 }, false)
+
+document.getElementById("blacklist_input").addEventListener("input", function(){
+    const sites = []
+    for(const site of document.getElementById("blacklist_input").value.split(',')){
+        sites.push(site.trim())
+    }
+    chrome.storage.sync.set({blacklist_input : sites})
+})
