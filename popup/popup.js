@@ -1,17 +1,19 @@
-import {shortlink, copyStringToClipboard} from "../script/app.js"
+import {shortlink, copyStringToClipboard, storage} from "../script/app.js"
 
-chrome.storage.sync.get(['copy_on_click'], function(result){
-    if(result.copy_on_click){
-        chrome.tabs.query({active:true, lastFocusedWindow:true}, tabs=>{
+async function popup(){
+    if(await storage(['copy_on_click'].copy_on_click)){
+        chrome.tabs.query({active:true, lastFocusedWindow:true}, async tabs=>{
             const url = new URL(tabs[0].url)
-            copyStringToClipboard(shortlink(url))
+            await copyStringToClipboard(await shortlink(url))
         }) 
     }
-})
+}
+popup()
 
-document.getElementById("copy_button").addEventListener("click", function(){
-    chrome.tabs.query({active:true, lastFocusedWindow:true}, tabs=>{
+
+document.getElementById("copy_button").addEventListener("click", async function(){
+    chrome.tabs.query({active:true, lastFocusedWindow:true}, async tabs=>{
         const url = new URL(tabs[0].url)
-        copyStringToClipboard(shortlink(url))
+        await copyStringToClipboard(await shortlink(url))
     }) 
 })

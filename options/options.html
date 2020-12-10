@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="options.css"/>
-        <script src="options.js" defer></script>
+        <script type="module" src="options.js" defer></script>
         <title>Shortlinks Options</title>
     </head>
     <body>
@@ -48,6 +48,23 @@
                 <td>
                     Copy shortened link in the clipboard at this key combination :
                     <input type="text" id="command">
+                </td>
+            </tr>
+            
+        </table>
+        <h2>2. Advanced options</h2>
+        <table class="options">
+            <tr>
+                <td>
+                    <div class="container">
+                        <label class="switch">
+                            <input type="checkbox" id="int_point">
+                            <span class="slider round">
+                        </label>
+                    </div>
+                </td>
+                <td>
+                    Delete everything after interrogation point in the link <img src="../assets/warning.png" class="warning" title="This option can create unworked links">
                 </td>
             </tr>
         </table>

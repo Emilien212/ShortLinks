@@ -1,9 +1,13 @@
-const checkbox = ["copy_on_click", "clipboard", "notification"]
-for (const element of checkbox){
-    chrome.storage.sync.get([element], function(items){
-        document.getElementById(element).checked=items[element]
-    })
+import {shortlink, copyStringToClipboard, storage} from "../script/app.js"
+
+const checkbox = ["copy_on_click", "clipboard", "notification", "int_point"]
+async function check(){
+    for (const element of checkbox){
+        const object = await storage([element])
+        document.getElementById(element).checked=object[element]
+    }   
 }
+check()
 
 for (const element of checkbox){
     document.getElementById(element).addEventListener('change', (event) => {
@@ -11,19 +15,19 @@ for (const element of checkbox){
       })
 }
 
-function cp_command(){
-    chrome.storage.sync.get("clipboard_command", function(items){
-        let string = ""
-        if(items.clipboard_command.altKey){
-            string+="Alt + "
-        }if(items.clipboard_command.shiftKey){
-            string+="Shift + "
-        }if(items.clipboard_command.ctrlKey){
-            string+="Ctrl + "
-        }
-        string+=items.clipboard_command.key.toUpperCase()
-        document.getElementById("command").value = string
-    })
+async function cp_command(){
+    const item = await storage(['clipboard_command'])
+    let string = ""
+    if(item.clipboard_command.altKey){
+        string+="Alt + "
+    }if(item.clipboard_command.shiftKey){
+        string+="Shift + "
+    }if(item.clipboard_command.ctrlKey){
+        string+="Ctrl + "
+    }
+    string+=item.clipboard_command.key.toUpperCase()
+    document.getElementById("command").value = string
+    
 }
 cp_command()
 

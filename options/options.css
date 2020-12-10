@@ -66,3 +66,8 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+.warning {
+    height: 15px;
+    margin-left: 5px;
+}
