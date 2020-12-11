@@ -1,17 +1,16 @@
 function storage(key) {
     return new Promise(resolve => {
         chrome.storage.sync.get(key, function(item){
-            resolve(item)
+            resolve(item[key])
         })
     })
 }
 
 async function shortlink(url){
-    const storages = await storage(["blacklist"])
     let blacklist = []
-    if (storages.blacklist == true){
+    if (await storage(["blacklist"])){
         const blacklist_input = await storage(["blacklist_input"])
-        blacklist = blacklist.concat(blacklist_input.blacklist_input)
+        blacklist = blacklist.concat(blacklist_input)
     }
     if (blacklist.some(blacklisted => url.host === blacklisted)){
         return url.href
@@ -36,7 +35,7 @@ async function shortlink(url){
                 return shorturl
             } 
     }
-    if(await storage(["int_point"]).int_point){   
+    if(await storage(["int_point"])){   
         return url.href.split('?')[0]
     }
     else{
@@ -53,7 +52,7 @@ async function copyStringToClipboard(str) {
 	el.select()
 	document.execCommand('copy')
     document.body.removeChild(el)
-    if (await storage(['notification']).notification){
+    if (await storage(['notification'])){
         chrome.notifications.create("notification", {type: "basic", iconUrl : "./../assets/ShortLinks.png", title: "ShortLinks", message: "Link successfully shortened and copied !"}, function(){})
     }
 }

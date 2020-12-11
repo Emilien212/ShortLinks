@@ -4,23 +4,23 @@ const checkbox = ["copy_on_click", "clipboard", "notification", "int_point", "bl
 async function start(){
     for (const element of checkbox){
         const object = await storage([element])
-        document.getElementById(element).checked=object[element]
+        document.getElementById(element).checked=object
         document.getElementById(element).addEventListener('change', (event) => {
             chrome.storage.sync.set({ [element]: document.getElementById(element).checked})
         })
     }
     const blacklist_input = await storage(["blacklist_input"])
-    document.getElementById("blacklist_input").value = blacklist_input.blacklist_input.join(', ')
+    document.getElementById("blacklist_input").value = blacklist_input.join(', ')
     const item = await storage(['clipboard_command'])
     let string = ""
-    if(item.clipboard_command.altKey){
+    if(item.altKey){
         string+="Alt + "
-    }if(item.clipboard_command.shiftKey){
+    }if(item.shiftKey){
         string+="Shift + "
-    }if(item.clipboard_command.ctrlKey){
+    }if(item.ctrlKey){
         string+="Ctrl + "
     }
-    string+=item.clipboard_command.key.toUpperCase()
+    string+=item.key.toUpperCase()
     document.getElementById("command").value = string
 }
 start()
